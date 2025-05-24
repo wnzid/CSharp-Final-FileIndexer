@@ -40,6 +40,24 @@ namespace ScannerA
                     {
                         Console.WriteLine("- " + Path.GetFileName(file));
                     }
+
+                    Console.WriteLine("\nReading the first file:\n");
+
+                    string firstFile = txtFiles[0];
+
+                    try
+                    {
+                        using StreamReader reader = new StreamReader(firstFile);
+                        string? line;
+                        while ((line = reader.ReadLine()) != null)
+                        {
+                            Console.WriteLine(line);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine("Error reading the file: " + ex.Message);
+                    }
                 }
             }
 
