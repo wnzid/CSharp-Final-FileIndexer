@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Text;
 
 namespace ScannerA
 {
@@ -41,23 +42,25 @@ namespace ScannerA
                         Console.WriteLine("- " + Path.GetFileName(file));
                     }
 
-                    Console.WriteLine("\nReading the first file:\n");
+                    Console.WriteLine("\nReading and combining content from all files...\n");
 
-                    string firstFile = txtFiles[0];
+                    StringBuilder allContent = new StringBuilder();
 
-                    try
+                    foreach (string filePath in txtFiles)
                     {
-                        using StreamReader reader = new StreamReader(firstFile);
-                        string? line;
-                        while ((line = reader.ReadLine()) != null)
+                        try
                         {
-                            Console.WriteLine(line);
+                            string fileContent = File.ReadAllText(filePath);
+                            allContent.AppendLine(fileContent);
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine("Error reading " + Path.GetFileName(filePath) + ": " + ex.Message);
                         }
                     }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine("Error reading the file: " + ex.Message);
-                    }
+
+                    Console.WriteLine("Combined content:\n");
+                    Console.WriteLine(allContent.ToString());
                 }
             }
 
