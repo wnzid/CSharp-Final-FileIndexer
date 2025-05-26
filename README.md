@@ -9,3 +9,4 @@
 -v1.5 - count word frequency in each .txt file and store in dictionary <br/>
 -v1.6 - format output as filename:word:count per line <br/>
 -v1.7 - added loop to let user choose another folder <br/>
+-v1.8 - skip empty files <br/>
