@@ -2,6 +2,7 @@
 using System.IO;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using System.Linq;
 
 namespace ScannerA
 {
@@ -15,79 +16,89 @@ namespace ScannerA
             Console.WriteLine("         ScannerA is starting up         ");
             Console.WriteLine("=========================================\n");
 
-            Console.WriteLine("This program will scan .txt files in a folder.");
-            Console.WriteLine("Let’s start by choosing the folder to scan.\n");
+            Console.WriteLine("This program scans .txt files in a folder and counts word frequencies.\n");
 
-            Console.Write("Enter the full path to the folder: ");
-            string folderPath = Console.ReadLine();
-
-            if (!Directory.Exists(folderPath))
+            while (true)
             {
-                Console.WriteLine("\nThe folder doesn’t exist. Please check the path and try again.");
-            }
-            else
-            {
-                Console.WriteLine("\nFolder found. Scanning for .txt files...\n");
+                Console.Write("Enter the full path to the folder: ");
+                string folderPath = Console.ReadLine();
 
-                string[] txtFiles = Directory.GetFiles(folderPath, "*.txt");
-
-                if (txtFiles.Length == 0)
+                if (!Directory.Exists(folderPath))
                 {
-                    Console.WriteLine("No .txt files found in the folder.");
+                    Console.WriteLine("\nThe folder doesn’t exist. Please check the path and try again.");
                 }
                 else
                 {
-                    Console.WriteLine("Found the following .txt files:");
-                    foreach (string file in txtFiles)
+                    Console.WriteLine("\nFolder found. Scanning for .txt files...\n");
+
+                    string[] txtFiles = Directory.GetFiles(folderPath, "*.txt");
+
+                    if (txtFiles.Length == 0)
                     {
-                        Console.WriteLine("- " + Path.GetFileName(file));
+                        Console.WriteLine("No .txt files found in the folder.");
                     }
-
-                    Console.WriteLine("\nCounting words in each file...\n");
-
-                    Dictionary<string, Dictionary<string, int>> wordCounts = new();
-
-                    foreach (string filePath in txtFiles)
+                    else
                     {
-                        string fileName = Path.GetFileName(filePath);
-                        wordCounts[fileName] = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
-
-                        try
+                        Console.WriteLine("Found the following .txt files:");
+                        foreach (string file in txtFiles)
                         {
-                            string content = File.ReadAllText(filePath);
-                            string[] words = Regex.Split(content, @"\W+");
+                            Console.WriteLine("- " + Path.GetFileName(file));
+                        }
 
-                            foreach (string word in words)
+                        Console.WriteLine("\nCounting words in each file...\n");
+
+                        Dictionary<string, Dictionary<string, int>> wordCounts = new();
+
+                        foreach (string filePath in txtFiles)
+                        {
+                            string fileName = Path.GetFileName(filePath);
+                            wordCounts[fileName] = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
+
+                            try
                             {
-                                if (string.IsNullOrWhiteSpace(word))
-                                    continue;
+                                string content = File.ReadAllText(filePath);
+                                string[] words = Regex.Split(content, @"\W+");
 
-                                if (!wordCounts[fileName].ContainsKey(word))
-                                    wordCounts[fileName][word] = 1;
-                                else
-                                    wordCounts[fileName][word]++;
+                                foreach (string word in words)
+                                {
+                                    if (string.IsNullOrWhiteSpace(word))
+                                        continue;
+
+                                    if (!wordCounts[fileName].ContainsKey(word))
+                                        wordCounts[fileName][word] = 1;
+                                    else
+                                        wordCounts[fileName][word]++;
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                Console.WriteLine("Error reading " + fileName + ": " + ex.Message);
                             }
                         }
-                        catch (Exception ex)
-                        {
-                            Console.WriteLine("Error reading " + fileName + ": " + ex.Message);
-                        }
-                    }
 
-                    Console.WriteLine("Final formatted output:\n");
+                        Console.WriteLine("Final formatted output:\n");
 
-                    foreach (var fileEntry in wordCounts)
-                    {
-                        foreach (var wordEntry in fileEntry.Value)
+                        foreach (var fileEntry in wordCounts)
                         {
-                            Console.WriteLine($"{fileEntry.Key}:{wordEntry.Key}:{wordEntry.Value}");
+                            foreach (var wordEntry in fileEntry.Value)
+                            {
+                                Console.WriteLine($"{fileEntry.Key}:{wordEntry.Key}:{wordEntry.Value}");
+                            }
                         }
                     }
                 }
-            }
 
-            Console.WriteLine("\nPress any key to close...");
-            Console.ReadKey();
+                Console.Write("\nDo you want to scan another folder? (y/n): ");
+                string answer = Console.ReadLine()?.Trim().ToLower();
+
+                if (answer != "y")
+                {
+                    Console.WriteLine("Exiting program. Goodbye!");
+                    break;
+                }
+
+                Console.WriteLine();
+            }
         }
     }
 }
