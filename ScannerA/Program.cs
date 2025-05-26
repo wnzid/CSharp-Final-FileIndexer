@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
-using System.Text;
+using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 namespace ScannerA
 {
@@ -8,7 +9,7 @@ namespace ScannerA
     {
         static void Main(string[] args)
         {
-            Console.Title = "ScannerA - File Reader";
+            Console.Title = "ScannerA - Word Frequency Counter";
 
             Console.WriteLine("=========================================");
             Console.WriteLine("         ScannerA is starting up         ");
@@ -42,25 +43,46 @@ namespace ScannerA
                         Console.WriteLine("- " + Path.GetFileName(file));
                     }
 
-                    Console.WriteLine("\nReading and combining content from all files...\n");
+                    Console.WriteLine("\nCounting words in each file...\n");
 
-                    StringBuilder allContent = new StringBuilder();
+                    Dictionary<string, Dictionary<string, int>> wordCounts = new();
 
                     foreach (string filePath in txtFiles)
                     {
+                        string fileName = Path.GetFileName(filePath);
+                        wordCounts[fileName] = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
+
                         try
                         {
-                            string fileContent = File.ReadAllText(filePath);
-                            allContent.AppendLine(fileContent);
+                            string content = File.ReadAllText(filePath);
+
+                            string[] words = Regex.Split(content, @"\W+");
+
+                            foreach (string word in words)
+                            {
+                                if (string.IsNullOrWhiteSpace(word))
+                                    continue;
+
+                                if (!wordCounts[fileName].ContainsKey(word))
+                                    wordCounts[fileName][word] = 1;
+                                else
+                                    wordCounts[fileName][word]++;
+                            }
                         }
                         catch (Exception ex)
                         {
-                            Console.WriteLine("Error reading " + Path.GetFileName(filePath) + ": " + ex.Message);
+                            Console.WriteLine("Error reading " + fileName + ": " + ex.Message);
                         }
                     }
 
-                    Console.WriteLine("Combined content:\n");
-                    Console.WriteLine(allContent.ToString());
+                    foreach (var fileEntry in wordCounts)
+                    {
+                        Console.WriteLine($"\nFile: {fileEntry.Key}");
+                        foreach (var wordEntry in fileEntry.Value)
+                        {
+                            Console.WriteLine($"{wordEntry.Key}: {wordEntry.Value}");
+                        }
+                    }
                 }
             }
 
