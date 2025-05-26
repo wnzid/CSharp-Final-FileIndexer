@@ -11,3 +11,4 @@
 -v1.7 - added loop to let user choose another folder <br/>
 -v1.8 - skip empty files <br/>
 -v2.0 - added pipe server waiting on 'agent1' <br/>
+-v2.1 – ScannerA connects to pipe and sends a test message <br/>
