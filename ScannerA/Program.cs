@@ -1,5 +1,7 @@
 ﻿using System;
 using System.IO;
+using System.IO.Pipes;
+using System.Text;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Linq;
@@ -93,6 +95,24 @@ namespace ScannerA
                             {
                                 Console.WriteLine($"{fileEntry.Key}:{wordEntry.Key}:{wordEntry.Value}");
                             }
+                        }
+
+                        
+                        try
+                        {
+                            using NamedPipeClientStream pipeClient = new NamedPipeClientStream(".", "agent1", PipeDirection.Out);
+                            pipeClient.Connect(2000);
+
+                            using StreamWriter writer = new StreamWriter(pipeClient);
+                            writer.AutoFlush = true;
+
+                            writer.WriteLine("Hello from ScannerA");
+
+                            Console.WriteLine("\nMessage sent to Master via pipe.");
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine("Could not connect to Master pipe: " + ex.Message);
                         }
                     }
                 }
