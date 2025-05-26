@@ -55,7 +55,6 @@ namespace ScannerA
                         try
                         {
                             string content = File.ReadAllText(filePath);
-
                             string[] words = Regex.Split(content, @"\W+");
 
                             foreach (string word in words)
@@ -75,12 +74,13 @@ namespace ScannerA
                         }
                     }
 
+                    Console.WriteLine("Final formatted output:\n");
+
                     foreach (var fileEntry in wordCounts)
                     {
-                        Console.WriteLine($"\nFile: {fileEntry.Key}");
                         foreach (var wordEntry in fileEntry.Value)
                         {
-                            Console.WriteLine($"{wordEntry.Key}: {wordEntry.Value}");
+                            Console.WriteLine($"{fileEntry.Key}:{wordEntry.Key}:{wordEntry.Value}");
                         }
                     }
                 }
