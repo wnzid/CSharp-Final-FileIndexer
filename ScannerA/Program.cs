@@ -52,11 +52,20 @@ namespace ScannerA
                         foreach (string filePath in txtFiles)
                         {
                             string fileName = Path.GetFileName(filePath);
-                            wordCounts[fileName] = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
+                            string content;
 
                             try
                             {
-                                string content = File.ReadAllText(filePath);
+                                content = File.ReadAllText(filePath).Trim();
+
+                                if (string.IsNullOrEmpty(content))
+                                {
+                                    Console.WriteLine($"Skipping {fileName} (empty file)");
+                                    continue;
+                                }
+
+                                wordCounts[fileName] = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
+
                                 string[] words = Regex.Split(content, @"\W+");
 
                                 foreach (string word in words)
@@ -76,7 +85,7 @@ namespace ScannerA
                             }
                         }
 
-                        Console.WriteLine("Final formatted output:\n");
+                        Console.WriteLine("\nFinal formatted output:\n");
 
                         foreach (var fileEntry in wordCounts)
                         {
