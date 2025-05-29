@@ -13,3 +13,4 @@
 -v2.0 - added pipe server waiting on 'agent1' <br/>
 -v2.1 – ScannerA connects to pipe and sends a test message <br/>
 -v2.2 - ScannerA sends file content to pipe server(master) <br/>
+-v2.3 - Asking user if they want to send data to master <br/>
