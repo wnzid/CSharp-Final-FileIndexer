@@ -14,3 +14,4 @@
 -v2.1 – ScannerA connects to pipe and sends a test message <br/>
 -v2.2 - ScannerA sends file content to pipe server(master) <br/>
 -v2.3 - Asking user if they want to send data to master <br/>
+-v2.4 - input validation in scannerA <br/>
