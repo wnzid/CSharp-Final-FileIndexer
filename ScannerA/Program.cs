@@ -97,8 +97,17 @@ namespace ScannerA
                             }
                         }
 
-                        Console.Write("\nDo you want to send this result to the Master? (y/n): ");
-                        string sendAnswer = Console.ReadLine()?.Trim().ToLower();
+                        string sendAnswer;
+                        while (true)
+                        {
+                            Console.Write("\nDo you want to send this result to the Master? (y/n): ");
+                            sendAnswer = Console.ReadLine()?.Trim().ToLower();
+
+                            if (sendAnswer == "y" || sendAnswer == "n")
+                                break;
+                            else
+                                Console.WriteLine("Invalid input. Please enter 'y' or 'n'.");
+                        }
 
                         if (sendAnswer == "y")
                         {
@@ -133,10 +142,19 @@ namespace ScannerA
                     }
                 }
 
-                Console.Write("\nDo you want to scan another folder? (y/n): ");
-                string answer = Console.ReadLine()?.Trim().ToLower();
+                string continueAnswer;
+                while (true)
+                {
+                    Console.Write("\nDo you want to scan another folder? (y/n): ");
+                    continueAnswer = Console.ReadLine()?.Trim().ToLower();
 
-                if (answer != "y")
+                    if (continueAnswer == "y" || continueAnswer == "n")
+                        break;
+                    else
+                        Console.WriteLine("Invalid input. Please enter 'y' or 'n'.");
+                }
+
+                if (continueAnswer != "y")
                 {
                     Console.WriteLine("Exiting program. Goodbye!");
                     break;
