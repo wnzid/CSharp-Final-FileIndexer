@@ -97,7 +97,7 @@ namespace ScannerA
                             }
                         }
 
-                        
+
                         try
                         {
                             using NamedPipeClientStream pipeClient = new NamedPipeClientStream(".", "agent1", PipeDirection.Out);
@@ -106,9 +106,16 @@ namespace ScannerA
                             using StreamWriter writer = new StreamWriter(pipeClient);
                             writer.AutoFlush = true;
 
-                            writer.WriteLine("Hello from ScannerA");
+                            foreach (var fileEntry in wordCounts)
+                            {
+                                foreach (var wordEntry in fileEntry.Value)
+                                {
+                                    string line = $"{fileEntry.Key}:{wordEntry.Key}:{wordEntry.Value}";
+                                    writer.WriteLine(line);
+                                }
+                            }
 
-                            Console.WriteLine("\nMessage sent to Master via pipe.");
+                            Console.WriteLine("\nAll word data sent to Master via pipe.");
                         }
                         catch (Exception ex)
                         {
