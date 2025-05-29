@@ -97,29 +97,38 @@ namespace ScannerA
                             }
                         }
 
+                        Console.Write("\nDo you want to send this result to the Master? (y/n): ");
+                        string sendAnswer = Console.ReadLine()?.Trim().ToLower();
 
-                        try
+                        if (sendAnswer == "y")
                         {
-                            using NamedPipeClientStream pipeClient = new NamedPipeClientStream(".", "agent1", PipeDirection.Out);
-                            pipeClient.Connect(2000);
-
-                            using StreamWriter writer = new StreamWriter(pipeClient);
-                            writer.AutoFlush = true;
-
-                            foreach (var fileEntry in wordCounts)
+                            try
                             {
-                                foreach (var wordEntry in fileEntry.Value)
-                                {
-                                    string line = $"{fileEntry.Key}:{wordEntry.Key}:{wordEntry.Value}";
-                                    writer.WriteLine(line);
-                                }
-                            }
+                                using NamedPipeClientStream pipeClient = new NamedPipeClientStream(".", "agent1", PipeDirection.Out);
+                                pipeClient.Connect(2000);
 
-                            Console.WriteLine("\nAll word data sent to Master via pipe.");
+                                using StreamWriter writer = new StreamWriter(pipeClient);
+                                writer.AutoFlush = true;
+
+                                foreach (var fileEntry in wordCounts)
+                                {
+                                    foreach (var wordEntry in fileEntry.Value)
+                                    {
+                                        string line = $"{fileEntry.Key}:{wordEntry.Key}:{wordEntry.Value}";
+                                        writer.WriteLine(line);
+                                    }
+                                }
+
+                                Console.WriteLine("\nAll word data sent to Master via pipe.");
+                            }
+                            catch (Exception ex)
+                            {
+                                Console.WriteLine("Could not connect to Master pipe: " + ex.Message);
+                            }
                         }
-                        catch (Exception ex)
+                        else
                         {
-                            Console.WriteLine("Could not connect to Master pipe: " + ex.Message);
+                            Console.WriteLine("Skipping sending data to Master.");
                         }
                     }
                 }
