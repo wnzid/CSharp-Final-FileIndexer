@@ -16,3 +16,4 @@
 -v2.3 - Asking user if they want to send data to master <br/>
 -v2.4 - input validation in scannerA <br/>
 -v3.0 - added ScannerB (clonned scannerA) <br/>
+-v3.1 – Master handles ScannerA and ScannerB sequentially <br/>
