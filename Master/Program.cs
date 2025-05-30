@@ -37,7 +37,7 @@ namespace Master
                 string? line;
                 while ((line = reader.ReadLine()) != null)
                 {
-                    Console.WriteLine($"{pipeName.ToUpper()} → {line}");
+                    Console.WriteLine($"{pipeName.ToUpper()} -> {line}");
                 }
 
                 Console.WriteLine($"\n{pipeName.ToUpper()} disconnected.");
