@@ -15,3 +15,4 @@
 -v2.2 - ScannerA sends file content to pipe server(master) <br/>
 -v2.3 - Asking user if they want to send data to master <br/>
 -v2.4 - input validation in scannerA <br/>
+-v3.0 - added ScannerB (clonned scannerA) <br/>
