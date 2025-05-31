@@ -17,3 +17,4 @@
 -v2.4 - input validation in scannerA <br/>
 -v3.0 - added ScannerB (clonned scannerA) <br/>
 -v3.1 – Master handles ScannerA and ScannerB sequentially <br/>
+-v3.2 - Master gives combined result of both scanners <br/>
