@@ -3,23 +3,31 @@ using System.IO;
 using System.IO.Pipes;
 using System.Text;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace Master
 {
     internal class Program
     {
         static Dictionary<string, Dictionary<string, int>> mergedData = new();
+        static object lockObj = new();
 
         static void Main(string[] args)
         {
-            Console.Title = "Master - Aggregating Word Data";
+            Console.Title = "Master - Threaded Multi-Agent Receiver";
 
             Console.WriteLine("==========================================");
             Console.WriteLine("           Master is starting up          ");
             Console.WriteLine("==========================================\n");
 
-            HandleAgent("agent1");
-            HandleAgent("agent2");
+            Thread t1 = new Thread(() => HandleAgent("agent1"));
+            Thread t2 = new Thread(() => HandleAgent("agent2"));
+
+            t1.Start();
+            t2.Start();
+
+            t1.Join();
+            t2.Join();
 
             Console.WriteLine("\nAll agent data received. Combined result:\n");
 
@@ -53,7 +61,7 @@ namespace Master
                     ProcessLine(line);
                 }
 
-                Console.WriteLine($"\n{pipeName.ToUpper()} disconnected.");
+                Console.WriteLine($"{pipeName.ToUpper()} disconnected.");
             }
             catch (Exception ex)
             {
@@ -70,18 +78,21 @@ namespace Master
             string word = parts[1];
             if (!int.TryParse(parts[2], out int count)) return;
 
-            if (!mergedData.ContainsKey(file))
+            lock (lockObj)
             {
-                mergedData[file] = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
-            }
+                if (!mergedData.ContainsKey(file))
+                {
+                    mergedData[file] = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
+                }
 
-            if (mergedData[file].ContainsKey(word))
-            {
-                mergedData[file][word] += count;
-            }
-            else
-            {
-                mergedData[file][word] = count;
+                if (mergedData[file].ContainsKey(word))
+                {
+                    mergedData[file][word] += count;
+                }
+                else
+                {
+                    mergedData[file][word] = count;
+                }
             }
         }
     }
