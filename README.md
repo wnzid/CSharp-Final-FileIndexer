@@ -20,3 +20,4 @@
 -v3.2 - Master gives combined result of both scanners <br/>
 -v4.0 - added multithreading to ScannerA (read and send run in separate threads) <br/>
 -v4.1 - added multithreading to ScannerB (read and send run in separate threads) <br/>
+-v4.2 - added multithreading to Master (handle ScannerA and ScannerB in separate threads) <br/>
