@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Linq;
 using System.Threading;
+using System.Diagnostics;
 
 namespace ScannerB
 {
@@ -16,6 +17,7 @@ namespace ScannerB
         static void Main(string[] args)
         {
             Console.Title = "ScannerB - Word Frequency Counter";
+            Process.GetCurrentProcess().ProcessorAffinity = (IntPtr)0x4;
 
             Console.WriteLine("=========================================");
             Console.WriteLine("         ScannerB is starting up         ");

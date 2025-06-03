@@ -4,6 +4,7 @@ using System.IO.Pipes;
 using System.Text;
 using System.Collections.Generic;
 using System.Threading;
+using System.Diagnostics;
 
 namespace Master
 {
@@ -15,6 +16,7 @@ namespace Master
         static void Main(string[] args)
         {
             Console.Title = "Master - Threaded Multi-Agent Receiver";
+            Process.GetCurrentProcess().ProcessorAffinity = (IntPtr)0x1;
 
             Console.WriteLine("==========================================");
             Console.WriteLine("           Master is starting up          ");
