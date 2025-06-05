@@ -153,8 +153,6 @@ namespace ScannerB
 
         static void SendToMaster()
         {
-            Console.WriteLine($"[DEBUG] Sending on Thread ID: {Thread.CurrentThread.ManagedThreadId}");
-
             try
             {
                 using NamedPipeClientStream pipeClient = new NamedPipeClientStream(".", "agent2", PipeDirection.Out);
