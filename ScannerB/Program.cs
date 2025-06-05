@@ -97,8 +97,6 @@ namespace ScannerB
 
         static void ReadAndCountWords(string folderPath)
         {
-            Console.WriteLine($"[DEBUG] Reading on Thread ID: {Thread.CurrentThread.ManagedThreadId}");
-
             string[] txtFiles = Directory.GetFiles(folderPath, "*.txt");
 
             if (txtFiles.Length == 0)
