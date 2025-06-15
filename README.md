@@ -67,5 +67,5 @@ v4.2 - added multithreading to `Master` (handle `ScannerA` and `ScannerB` in sep
 v4.3 – set ProcessorAffinity in each <br/> 
 
 ---
-@wnizd
+@wnzid
 
